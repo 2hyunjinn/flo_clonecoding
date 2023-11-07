@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment
 import com.example.flo.databinding.FragmentAlbumBinding
 import com.example.flo.databinding.FragmentSongBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 
 class AlbumFragment : Fragment() {
     lateinit var  binding : FragmentAlbumBinding
+    private var gson: Gson = Gson()
 
     private val information = arrayListOf("수록곡", "상세정보", "영상")
 
@@ -25,6 +27,11 @@ class AlbumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAlbumBinding.inflate(inflater, container, false)
+
+        // arguments에서 data를 꺼내서 Json형태로 앨범객체를 변환해서 albumJson으로 저장
+        val albumJson = arguments?.getString("album")
+        val album = gson.fromJson(albumJson, Album::class.java)
+        setInit(album)
 
         binding.albumBtnBackIv.setOnClickListener{
             val homeFragment = HomeFragment()  // AlbumFragment 객체 생성
@@ -43,5 +50,11 @@ class AlbumFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun setInit(album: Album){
+        binding.albumTitleTv.text = album.title.toString()
+        binding.albumSingerTv.text = album.singer.toString()
+        binding.albumImgIv.setImageResource(album.coverImg!!)
     }
 }

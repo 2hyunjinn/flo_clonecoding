@@ -4,11 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import com.example.flo.databinding.ActivityMainBinding
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
+    private val albumList: ArrayList<Album> = ArrayList()
 
     lateinit var binding: ActivityMainBinding
 
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.lookFragment -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, LookFragment())
+                        .replace(R.id.main_frm, LockFragment())
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 
         song = if(songJson == null){
             Song("나의 모든 현진이들에게,", "밍기뉴(mingginyu)",0,60,
-                false, "music_dearmyall")
+                false, false,"music_dearmyall")
         } else {
             gson.fromJson(songJson, Song::class.java)
         }
